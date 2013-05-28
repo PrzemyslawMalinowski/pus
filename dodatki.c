@@ -19,7 +19,7 @@ void wyluskajMlode(uint8_t vale){
 void wyslijDane(uint8_t v){
 		
 	PORTA =  (PORTA | 0b01000000);//Wlac		
-	PORTA =  (PORTA | 0b10000000);//Nadajemy literki
+	PORTA =  (PORTA | 0b10000000);//Nadajemy literki asf sa f
 	wyluskajStare(v);
 	PORTA =  (PORTA & 0b10111111); //Wylacz lock
 	
