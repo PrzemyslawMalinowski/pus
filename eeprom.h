@@ -8,30 +8,42 @@
 #include <avr/io.h>
 #include <avr/eeprom.h>
 
-int actual_position = 0;
+uint8_t* actual_position = 0;
 
-char* dodajString(char* s)
+uint8_t* dodajString(char* s)
 {
-	int length;
+	uint8_t length = 0;
 	
-	char* txt;
+	char* txt = s;
 	
-	while(txt != NULL)
+	while(*txt != '\0')
 	{
-		length ++;
-		txt ++;
+		eeprom_write_byte(actual_position + length, (uint8_t) *txt);
+		length += 1;
+		txt++;
 	}
 	
-	write_eeprom_array(actual_position,s,length);
+	eeprom_write_byte(actual_position + length, (uint8_t)'\0');
 	
 	actual_position += 50;
+	
+	return actual_position - 50;
 }
 
-char* czytajString(int start, int length)
+char* czytajString(int start)
 {
+	uint8_t * actual = start;
 	
-	char* txt;
-	read_eeprom_array(start,txt,length);
+	char tab[50];
+	int i = 0;
+	while(i < 50)
+	{
+		tab[i++] = (char)eeprom_read_byte(actual);
+		
+		actual++;
+	}
+	
+	char * txt = tab;
 	
 	return txt;
 }

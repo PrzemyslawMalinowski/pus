@@ -23,6 +23,7 @@
 #include <util/delay.h>
 
 #include "dodatki.h"
+#include "eeprom.h"
 
 void initLCD()
 {
@@ -68,13 +69,9 @@ void initLCD()
 
 int main(void)
 {
-	DDRA = 0xFF;
-	initLCD();
-    while(1)
-    {
-		
-	
-		
-		
-    }
+	//DDRA = 0xFF;
+	//initLCD();
+		dodajString("aa\0");
+		char* tab = czytajString(0);
+		//printf("%s",tab);
 }
