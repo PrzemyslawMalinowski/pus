@@ -16,6 +16,6 @@ void wyluskajNowe(uint8_t vale);
 void wyslijDane();
 void wyslijNapis(char* text);
 void wyslijComend(uint8_t text);
-
+void SetDisplay(int myPos, int obstaclex,int obstacley);
 
 #endif /* INCFILE1_H_ */
