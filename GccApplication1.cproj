@@ -18,7 +18,7 @@
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
-    <OverrideVtorValue />
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
     <eraseonlaunchrule>0</eraseonlaunchrule>
     <AsfVersion>3.5.0</AsfVersion>
     <avrtoolinterface />
@@ -32,7 +32,7 @@
       </StimuliFile>
       <Channel>
         <host>127.0.0.1</host>
-        <port>32496</port>
+        <port>9763</port>
         <ssl>False</ssl>
       </Channel>
     </com_atmel_avrdbg_tool_simulator>
@@ -108,6 +108,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="dodatki.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="klawiatura.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

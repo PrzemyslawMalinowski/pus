@@ -23,6 +23,7 @@
 
 #include "dodatki.h"
 #include "eeprom.h"
+#include "klawiatura.h"
 
 int charFromKeyBoard[100];
 int cursosPosition=0;
@@ -115,16 +116,32 @@ void initLCD()
 
 int main(void)
 {
-	DDRA = 0xFF;
-	initLCD();
-	//wyslijDane(33);
-	//wyslijNapis("ABCDTEST");
-    int i=20;
+	
+	/* Wszystkie linie portu A bêd¹ wyjœciami */
+	DDRA = 0xFF;  /* 0xFF binarnie 1111 1111 */
+	
+	//
+	DDRC = 0x00;
+	PORTC = 0xFF;
+	
+
+	/* Pocz¹tek nieskoñczonej pêtli */
+	
+	uint8_t a = 0;
 	
 	while(1)
 	{
+		key_init();
 		
+		uint8_t t = get_key();
 		
-		SetDisplay(2,i--,4);
+		if(t != a && t != 0)
+		{
+				a = 0;
+				a = t;
+		}
+
+		PORTA = a;
 	}
+	
 }
