@@ -28,6 +28,11 @@ void wyslijNapis(char* text)
 }
 
 
+void clearLCD(){
+	
+	wyslijNapis(" ");
+}
+
 void SetLineEmpty()
 {
 	
@@ -107,22 +112,64 @@ void SetDisplay(int myPos, int obstaclex,int obstacley)
 	
 }
 
+void writeTwoLines(char* text, char* text2)
+{
+	int i = 0;
+	
+	while(i < 39){
+		linedown[i] = ' ';
+		lineup[i] = ' ';
+		i++;
+	}
+	
+	lineup[39] = ' ';
+	
+	i = 0;
+	
+	while (*text != '\0')
+	{
+		lineup[i]= *text;
+		i++;
+		text++;
+	}
+	
+	i = 0;
+	
+	while (*text2 != '\0')
+	{
+		linedown[i]= *text2;
+		i++;
+		text2++;
+	}
+	
+	wyslijNapis(lineup);
+	wyslijNapis(linedown);
+}
+
 void wyslijLine2(char* text, char* text2)
 {
-	while (*text != 0)
+	
+	
+	while (*text != '\0')
 	{
 		lineup[curPos]= *text;
 		curPos++;
-		
+		text++;
 	}
 	curPos=0;
-	while (*text != 0)
+	
+	while (*text2 != '\0')
 	{
 			linedown[curPos]= *text2;
 			curPos++;
+			text2++;
 			
 	}
+	
 	curPos=0;
+	
+	wyslijNapis(lineup);
+	wyslijNapis(linedown);
 }
 
 void initLCD()

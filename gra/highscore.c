@@ -19,5 +19,4 @@ void DisplayHighScore(int which)
 	char* temp=czytajString(which);
 	wyslijNapis(temp ) ;
 	_delay_ms(100);
-	
 }

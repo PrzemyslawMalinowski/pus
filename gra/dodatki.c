@@ -39,10 +39,35 @@ void wyslijDane(uint8_t v){
 	PORTA = 0;
 	
 }
+
 void wyslijComend(uint8_t v){
 	PORTA |= 0x40;
 	PORTA =  ((PORTA & 0xF0)|( v & 0x0F));
 	PORTA &= ~0x40;
 
+}
+
+char* string_concatenate(char* s1, char* s2)
+{
+	char result[30];
+	
+	int i = 0;
+	
+	while(s1 != '\0')
+	{
+		result[i] = *s1;
+		s1++;
+	}
+	
+	while(s2 != '\0')
+	{
+		result[i] = *s2;
+		s2++;
+	}
+	
+	char* t = result;
+	
+	return t;
+	
 }
 

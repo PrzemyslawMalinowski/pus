@@ -117,21 +117,22 @@ void initLCD()
 int main(void)
 {
 	
-	/* Wszystkie linie portu A bêd¹ wyjœciami */
-	DDRA = 0xFF;  /* 0xFF binarnie 1111 1111 */
-	
-	//
-	DDRC = 0x00;
-	PORTC = 0xFF;
+	//Ustawienie pocz¹tku
+		DDRA = 0xFF; 
+		DDRC = 0x00;
+		PORTC = 0xFF;
+		
+		initLCD();
 	
 
-	/* Pocz¹tek nieskoñczonej pêtli */
+	/* Dzia³aj¹cy program */
 	
 	uint8_t a = 0;
 	
 	while(1)
 	{
 		key_init();
+		
 		
 		uint8_t t = get_key();
 		

@@ -14,6 +14,9 @@ void SetDisplay(int myPos, int obstaclex,int obstacley);
 void wyslijNapis(char* text);
 void wyslijLine2(char* text, char* text2);
 void initLCD();
+void SetLineEmpty();
+void clearLCD();
+void writeTwoLines(char* text, char* text2);
 
 
 #endif /* LCD_H_ */
