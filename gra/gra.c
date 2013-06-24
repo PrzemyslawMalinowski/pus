@@ -46,25 +46,33 @@
 	void show_main_menu();
 	void show_highscore();
 	void show_option();
+	void input_name();
+	void check_and_add_to_hotlist();
+	void show_game();
 	
 	/************************************************************************/
 	/* JAKIEŒ ZMIENNE!!                                                     */
 	/************************************************************************/
 	
 	char charFromKeyBoard[100]; //aka player name;
+	
 	int cursosPosition=0;
 	int comConf=0;
 	int insertingName=0;
 	int timepkt=0;
 	int timerConfigured=0;
-	GameMode_T gm= ins_name;
 	int lost=0;
+	int speed_value = 0;
+		
+	
+	GameMode_T gm= ins_name;
+	
 	char buforPKT[20];
 	char buforWyniku[20]= "Zdoby³: ";
 	char * s;
 
 	//Game:
-	int playerY,enemyX,enemyY;
+	int playerY=0,enemyX=0,enemyY=0;
 	
 	/*
 		Jakaœ funkcja
@@ -109,6 +117,7 @@
 			UCSRB |= 1<< RXCIE;
 			UCSRC |= (1<<URSEL) | 1<<UCSZ0| 1<<UCSZ1; //8bit mode
 			UBRRL=103;//dzielnik 19200
+			
 			comConf=1;
 	}
 	
@@ -124,23 +133,38 @@
 		 // timer_enable_int(_BV(TOIE1));
 		 TCNT0 = 0;
 		 sei();	
+		 
 		 timerConfigured=1;
 	}
 
+	int speed_game = 1000;
 	void gameTest(int py,int ex,int ey)
 	{
+		
 		if(ex==0 && ey==py)
 		{
-			lost=1;
+			lost = 1;			
 		}
-		SetDisplay(py,ex--,ey);
-
+		
+		if(ex == -1)
+		{
+			enemyX = 16;
+			enemyY = rand() % 4 + 1;
+			speed_game -= (50 + speed_value*40);
+			
+		}
+		//enemyX=enemyX-1;
+		
+		SetDisplay(py,enemyX--,ey);
+		_delay_ms(speed_game - speed_value*400);
+		
+		
 	}
 
 	void resetGameVal(int ey)
 	{
 		playerY=1;
-		enemyX=30;
+		enemyX=10;
 		enemyY=	ey;
 		lost=0;
 	}
@@ -169,13 +193,9 @@ int main(void)
 		PORTC = 0xFF;
 		uint8_t a = 0;
 	
-	int zarodek ;
-	zarodek= 12345;
-	srand(zarodek); 
-	resetGameVal( rand() % 4 + 1);
+	
 	
 	initLCD();
-	
 	
 	while(1)
 	{
@@ -193,7 +213,7 @@ int main(void)
 				} break;
 				
 				case ROZGRYWKA : {
-					
+					show_game();
 				} break;
 				
 				case WYNIKI : {
@@ -206,64 +226,7 @@ int main(void)
 			}
 		
 		
-		/*
-		if(lost==1)
-		{
-			gm=lost_game;
-		}
-					
-		switch(gm)
-		{
-			case game:		
-				
-				if(t==3) //up
-				{
-					gameTest((playerY-1)%4+1,enemyX,enemyY);
-				}
-				else
-				{
-					gameTest((playerY+1)%4+1,enemyX,enemyY);					
-				}
-				
-				if(timerConfigured==0)
-				{
-					configureTimer();
-				}
-				
-				break;
-			case high_score:
-				DisplayHighScore(10);
-				DisplayHighScore(20);
-				DisplayHighScore(30);
-				DisplayHighScore(40);
-				DisplayHighScore(50);
-				DisplayHighScore(60);
-				DisplayHighScore(70);
-				break;
-			case main_menu:
-				wyslijLine2("1. Graj","2. Wyniki");
-				if(t==1)
-				{
-					gm=ins_name;
-				}
-				if(t==2)
-				{
-					gm=high_score;
-				}
-				break;
-			case ins_name:
-				if(comConf==0)
-				{
-					configurePorts();
-				}				
-				break;
-			case lost_game:
-				itoa(timepkt,buforPKT,10);
-				strcat(buforWyniku, buforPKT);
-				wyslijLine2(charFromKeyBoard,buforWyniku);
-		}
-			
-			*/		
+		
 	}	
 }
 
@@ -283,6 +246,7 @@ ISR(INT1_vect)
 		//Pierwsze wyœwietlenie okna
 	
 		if(!bylo_pierwszy_raz){
+		    SetLineEmpty();
 			writeTwoLines("PUS ver 1.0 MENU:", "1. Rozpocznij");
 			bylo_pierwszy_raz = 1;
 		}
@@ -290,7 +254,7 @@ ISR(INT1_vect)
 	
 		if(!bylo_w_menu_wlasciwym){
 		
-			clearLCD();
+			//clearLCD();
 		
 			switch(wyswietl_okno){
 			
@@ -339,8 +303,6 @@ ISR(INT1_vect)
 				bylo_w_menu_wlasciwym = 0;
 				bylo_pierwszy_raz = 0;
 				
-				wyslijNapis(" ");
-				
 				_delay_ms(300);
 				
 			}
@@ -374,7 +336,7 @@ ISR(INT1_vect)
 			}
 		
 			if(!bylo_w_menu_wlasciwym){
-				clearLCD();
+				//clearLCD();
 				writeTwoLines("Najlepsi gracze:", readString(numer_wyniku * 16));
 				bylo_w_menu_wlasciwym = 1;
 			}
@@ -411,16 +373,14 @@ ISR(INT1_vect)
 					bylo_w_menu_wlasciwym = 0;
 					bylo_pierwszy_raz = 0;
 					
-					clearLCD();
+					//clearLCD();
 					
 					_delay_ms(300);
 					
 				}
 		
 	}
-	
-	int speed_value = 0;
-	
+
 	/*
 		Poka¿ opcjê dotycz¹c¹ gry
 	*/
@@ -446,7 +406,7 @@ ISR(INT1_vect)
 		}
 		
 		if(!bylo_w_menu_wlasciwym){
-			clearLCD();
+			//clearLCD();
 			
 			if(!speed_value)
 			{
@@ -492,8 +452,6 @@ ISR(INT1_vect)
 			bylo_w_menu_wlasciwym = 0;
 			bylo_pierwszy_raz = 0;
 			
-			clearLCD();
-			
 			_delay_ms(300);
 			
 		}
@@ -502,7 +460,86 @@ ISR(INT1_vect)
 	
 	void show_game()
 	{
+		//SPRAWDZAM YCZY PIERWSZY RAZ WESZLIŒMY DO OKNA
+			if(!bylo_pierwszy_raz)
+			{
+				//configureTimer();
+				//sei();
+				
+				input_name();
+				gm = game;
+				
+				int zarodek ;
+				zarodek= 12345;
+				srand(zarodek);
+				resetGameVal( rand() % 4 + 1);
+				
+				bylo_pierwszy_raz = 1;
+			}
+			
+		//SPRAWDZAMY CZY NIE PRZEGRALEŒ
+			if(lost == 1)
+			{
+				gm = lost_game;
+				_delay_ms(1000);
+			}
 		
+		//sprawdzamy odpowiednie akcje
+			switch(gm)
+			{
+				//stan gry
+					case game: {
+						
+						if(wybor == 0x09)
+						{
+							playerY= (playerY+2)%4+1;
+							gameTest(playerY,enemyX,enemyY);
+						}
+						else if(wybor == 0x0a)
+						{
+							
+							playerY=(playerY+4)%4+1;
+							gameTest(playerY,enemyX,enemyY);
+						}else
+						{
+							gameTest(playerY,enemyX,enemyY);
+						}
+						
+						/*
+						if(timerConfigured == 0)
+						{
+							configureTimer();
+						}*/
+						
+						
+						/*
+						char* a;
+						char* b;
+						
+						itoa(playerY,a,10);
+						itoa(enemyY,b,10);
+						
+						writeTwoLines(a,b);
+						_delay_ms(5000);*/
+						
+					} break;
+				
+				
+				//w przypadku przegranej
+					case lost_game: {
+						
+						itoa(timepkt,buforPKT,10);
+						strcat(buforWyniku, buforPKT);
+						
+						writeTwoLines("Przegrana punkty:",buforWyniku);
+						_delay_ms(4000);
+						
+						state = main_menu;
+						bylo_pierwszy_raz = 0;
+						bylo_w_menu_wlasciwym = 1;
+						
+					} break; 
+			}
 	}
 
 	void input_name()

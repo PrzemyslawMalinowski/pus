@@ -68,7 +68,7 @@ void SetDisplay(int myPos, int obstaclex,int obstacley)
 			break;
 		case 4:
 			linedown[0]=',';
-			break;;			
+			break;
 	}
 		
 	switch (obstacley)
@@ -76,39 +76,40 @@ void SetDisplay(int myPos, int obstaclex,int obstacley)
 			case 1:
 			lineup[obstaclex]='\'';
 			break;
+			
 			case 2:
 			lineup[obstaclex]=',';
 			break;
+			
 			case 3:
 			linedown[obstaclex]='\'';
 			break;
+			
 			case 4:
 			linedown[obstaclex]=',';
-			break;;
+			break;
 	}
 	if(obstaclex==0 && obstacley == myPos)
 	{
 		switch (obstacley)
 		{
-			case 1:
-			lineup[obstaclex]='$';
-			break;
-			case 2:
-			lineup[obstaclex]='$';
-			break;
-			case 3:
-			linedown[obstaclex]='$';
-			break;
-			case 4:
-			linedown[obstaclex]='$';
-			break;;
+			case 1: lineup[obstaclex]='$'; break;
+			case 2: lineup[obstaclex]='$'; break;
+			case 3: linedown[obstaclex]='$'; break;
+			case 4: linedown[obstaclex]='$'; break;;
 		}
 	}
 	
-	wyslijNapis(lineup);
-	
+	//writeTwoLines(lineup,linedown);
+	wyslijNapis(lineup);	
 	wyslijNapis(linedown);
-	_delay_ms(30);
+	_delay_ms(1000);
+	char* a;
+	/*
+	itoa(obstaclex,a,10);
+	writeTwoLines(a,"");
+	_delay_ms(1000);
+	*/
 	
 }
 
@@ -217,7 +218,7 @@ void initLCD()
 	wyslijComend(0x00);*/
 	
 	
-	_delay_ms(5);
+	//PORTA = 
 	
 	//wyslijComend(0x04);//Tryb pisanie [_DCDA      ]
 	//wyslijComend(0x05);//Tryb pisanie [      _DCBA]
